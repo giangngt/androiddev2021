@@ -10,7 +10,6 @@ Students are expected to:
 Student Info
 =======================
 
-* Name: *YourNameHere*
-* ID: *YourIdHere*
-* Group ID: *Your Group ID here*
-
+* Name: Nguyen Truong Giang
+* ID: BI9-084
+* Group ID: 4
