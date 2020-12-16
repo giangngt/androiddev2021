@@ -12,7 +12,9 @@ public class WeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         ForecastFragment firstFragment = new ForecastFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, firstFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.forecast, firstFragment).commit();
+        WeatherFragment secondFragment =new WeatherFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.weather, secondFragment).commit();
         setTitle("USTH Weather");
         Log.i("Weather", "create");
     }

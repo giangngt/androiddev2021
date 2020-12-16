@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ForecastFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/lab5"
     android:padding="15dip"
-    android:layout_margin="10dip">
+    android:layout_margin="10dip"
+    android:id="@+id/forecast">
 
     <LinearLayout
         android:layout_width="match_parent"
