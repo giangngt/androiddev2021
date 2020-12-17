@@ -14,13 +14,23 @@
         android:id="@+id/temp"
         android:text="12C"
         android:textSize="@dimen/weather_fragment_text"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
         />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/frame"
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/temp"
         android:text="@string/cloudy"
         android:textSize="20sp"
+        android:layout_marginLeft="25dp"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -28,6 +38,8 @@
         android:layout_alignParentRight="true"
         android:text="@string/paris"
         android:textSize="@dimen/weather_fragment_text"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
         />
 
     <ImageView
