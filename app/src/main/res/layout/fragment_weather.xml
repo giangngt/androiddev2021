@@ -13,21 +13,21 @@
         android:layout_height="wrap_content"
         android:id="@+id/temp"
         android:text="12C"
-        android:textSize="20sp"
+        android:textSize="@dimen/weather_fragment_text"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/temp"
-        android:text="Cloudy"
+        android:text="@string/cloudy"
         android:textSize="20sp"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Manchester"
-        android:textSize="20sp"
+        android:text="@string/paris"
+        android:textSize="@dimen/weather_fragment_text"
         />
 
     <ImageView
