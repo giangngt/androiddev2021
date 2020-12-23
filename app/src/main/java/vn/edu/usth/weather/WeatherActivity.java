@@ -8,10 +8,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +24,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class WeatherActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,7 @@ public class WeatherActivity extends AppCompatActivity {
         //lab11
         MediaPlayer mp = MediaPlayer.create(this, R.raw.sample);
         mp.start();
+
     }
 
     @Override
@@ -94,6 +100,28 @@ public class WeatherActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    //lab12
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.settings:
+                Intent intent = new Intent(this, PrefActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
