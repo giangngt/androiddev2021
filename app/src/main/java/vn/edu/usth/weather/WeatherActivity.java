@@ -45,31 +45,55 @@ public class WeatherActivity extends AppCompatActivity {
         //lab13
 
     }
-    public void refresh(){
-        final Handler hdl = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                String content = msg.getData().getString("server");
-                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+//    public void refresh(){
+//        final Handler hdl = new Handler(Looper.getMainLooper()) {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                String content = msg.getData().getString("server");
+//                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+//            }
+//        };
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(5000);
+//                }
+//                catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                Bundle bundle = new Bundle();
+//                bundle.putString("server", "fake data from json");
+//                Message msg = new Message();
+//                msg.setData(bundle);
+//                hdl.sendMessage(msg);
+//            }
+//        });
+//        t.start();
+//    }
+
+    private class refresh extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try
+            {
+                Thread.sleep( 5000 );
             }
-        };
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Bundle bundle = new Bundle();
-                bundle.putString("server", "fake data from json");
-                Message msg = new Message();
-                msg.setData(bundle);
-                hdl.sendMessage(msg);
+            catch ( InterruptedException e )
+            {
+                e.printStackTrace();
             }
-        });
-        t.start();
+            return null;
+        }
+
+        protected void onProgressUpdate(Void... voids) {
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Toast.makeText(getApplicationContext(),"fake data lmao", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     @Override
@@ -143,7 +167,7 @@ public class WeatherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                refresh();
+                new refresh().execute();
                 return true;
             case R.id.settings:
                 Intent intent = new Intent(this, PrefActivity.class);
