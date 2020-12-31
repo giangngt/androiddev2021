@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.*;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -37,10 +38,38 @@ public class WeatherActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
         Log.i("Weather", "create");
 
-        //lab11
-        MediaPlayer mp = MediaPlayer.create(this, R.raw.sample);
-        mp.start();
+//        lab11
+//        MediaPlayer mp = MediaPlayer.create(this, R.raw.sample);
+//        mp.start();
 
+        //lab13
+
+    }
+    public void refresh(){
+        final Handler hdl = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                String content = msg.getData().getString("server");
+                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+            }
+        };
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("server", "fake data from json");
+                Message msg = new Message();
+                msg.setData(bundle);
+                hdl.sendMessage(msg);
+            }
+        });
+        t.start();
     }
 
     @Override
@@ -114,7 +143,7 @@ public class WeatherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
+                refresh();
                 return true;
             case R.id.settings:
                 Intent intent = new Intent(this, PrefActivity.class);
