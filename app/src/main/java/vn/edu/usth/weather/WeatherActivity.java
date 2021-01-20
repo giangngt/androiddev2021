@@ -20,6 +20,11 @@ import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -80,30 +85,49 @@ public class WeatherActivity extends AppCompatActivity {
     private class refresh extends AsyncTask<Void, Integer, InputStream> {
         @Override
         protected InputStream doInBackground(Void... voids) {
-            InputStream is = null;
-            try
-            {
-                URL url = new URL("https://usth.edu.vn/uploads/logo_moi-eng.png");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
-                connection.connect();
-                //response
-                int response = connection.getResponseCode();
-                Log.i("USTH blabla", "Le response is :" + response);
-                is = connection.getInputStream();
-                //process image
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-                Log.i("Hello", "got logo");
+            Response.Listener<Bitmap> listener = new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    ImageView iv = (ImageView) findViewById(R.id.whatever);
+                    iv.setImageBitmap(response);
+                }
+            };
 
-                connection.disconnect();
+            ImageRequest imageRequest = new ImageRequest(
+                    "https://usth.edu.vn/uploads/logo_moi-eng.png",
+                    listener, 0, 0, ImageView.ScaleType.CENTER,
+                    Bitmap.Config.ARGB_8888,null);
 
-            }
-            catch (IOException e )
-            {
-                e.printStackTrace();
-            }
-            return is;
+            queue.add(imageRequest);
+            return null;
+
+//            InputStream is = null;
+//            try
+//            {
+//                URL url = new URL("https://usth.edu.vn/uploads/logo_moi-eng.png");
+//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                connection.setRequestMethod("GET");
+//                connection.setDoInput(true);
+//                connection.connect();
+//                //response
+//                int response = connection.getResponseCode();
+//                Log.i("USTH blabla", "Le response is :" + response);
+//                is = connection.getInputStream();
+//                //process image
+//
+//                Log.i("Hello", "got logo");
+//
+//                connection.disconnect();
+//
+//            }
+//            catch (IOException e )
+//            {
+//                e.printStackTrace();
+//            }
+//            return is;
+
         }
 
         protected void onProgressUpdate(Void... voids) {
@@ -111,10 +135,10 @@ public class WeatherActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(InputStream is) {
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            ImageView logo = (ImageView) findViewById(R.id.whatever);
-            logo.setImageBitmap(bitmap);
-            return;
+//            Bitmap bitmap = BitmapFactory.decodeStream(is);
+//            ImageView logo = (ImageView) findViewById(R.id.whatever);
+//            logo.setImageBitmap(bitmap);
+//            return;
         }
     }
 
