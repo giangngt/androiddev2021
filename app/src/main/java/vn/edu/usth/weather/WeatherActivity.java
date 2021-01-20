@@ -8,11 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.*;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -72,26 +77,43 @@ public class WeatherActivity extends AppCompatActivity {
 //        t.start();
 //    }
 
-    private class refresh extends AsyncTask<Void, Void, Void> {
+    private class refresh extends AsyncTask<Void, Integer, InputStream> {
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected InputStream doInBackground(Void... voids) {
+            InputStream is = null;
             try
             {
-                Thread.sleep( 5000 );
+                URL url = new URL("https://usth.edu.vn/uploads/logo_moi-eng.png");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                connection.connect();
+                //response
+                int response = connection.getResponseCode();
+                Log.i("USTH blabla", "Le response is :" + response);
+                is = connection.getInputStream();
+                //process image
+
+                Log.i("Hello", "got logo");
+
+                connection.disconnect();
+
             }
-            catch ( InterruptedException e )
+            catch (IOException e )
             {
                 e.printStackTrace();
             }
-            return null;
+            return is;
         }
 
         protected void onProgressUpdate(Void... voids) {
         }
 
         @Override
-        protected void onPostExecute(Void unused) {
-            Toast.makeText(getApplicationContext(),"fake data lmao", Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(InputStream is) {
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            ImageView logo = (ImageView) findViewById(R.id.whatever);
+            logo.setImageBitmap(bitmap);
             return;
         }
     }
