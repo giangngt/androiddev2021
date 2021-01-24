@@ -16,14 +16,21 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -214,6 +221,7 @@ public class WeatherActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.refresh:
                 new refresh().execute();
+                getWeatherData();
                 return true;
             case R.id.settings:
                 Intent intent = new Intent(this, PrefActivity.class);
@@ -222,5 +230,29 @@ public class WeatherActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void getWeatherData() {
+        //api call api.openweathermap.org/data/2.5/weather?q={city name}&appid=bfe4bed9c2a36bc63ae3cf18089c8395
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=bfe4bed9c2a36bc63ae3cf18089c8395";
+        RequestQueue rq = Volley.newRequestQueue(getApplicationContext());
+        StringRequest srq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject job = new JSONObject(response);
+                    JSONObject mainobj = job.getJSONObject("main");
+                    ((TextView) findViewById(R.id.temp)).setText(mainobj.getString("temp"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }});
+        rq.add(srq);
     }
 }
